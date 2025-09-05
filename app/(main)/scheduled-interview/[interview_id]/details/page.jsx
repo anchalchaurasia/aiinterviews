@@ -4,7 +4,7 @@ import { supabase } from "@/public/services/supabaseClient"; // ✅ don't keep J
 import { useParams } from "next/navigation";
 import { useUser } from "@/app/auth/provider"; // ✅ assuming you're using Clerk
 import InterviewDetailsContainer from "../_components/InterviewDetailsContainer";
-import CandidateList from "../_components/CandidateList";
+import CandidatList from "../_components/CandidatList";
 
 function InterviewDetail() {
   const { interview_id } = useParams();
@@ -51,7 +51,7 @@ function InterviewDetail() {
       {interviewDetail && (
         <>
           <InterviewDetailsContainer interviewDetail={interviewDetail} />
-          <CandidateList
+          <CandidatList
             candidateList={interviewDetail?.["interview-feedback"]}
           />
         </>
