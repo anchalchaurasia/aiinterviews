@@ -1,36 +1,63 @@
 "use client"
-import{ supabase } from '@/public/services/supabaseClient';
-import { useParams } from 'next/navigation'
-import React from 'react'
-import { useEffect } from 'react'
-import interviewDetails from '../_components/InterviewDetailsContainer';
+import React, { useEffect, useState } from "react";
+import { supabase } from "@/public/services/supabaseClient"; // ✅ don't keep JS inside /public
+import { useParams } from "next/navigation";
+import { useUser } from "@/app/auth/provider"; // ✅ assuming you're using Clerk
+import InterviewDetailsContainer from "../_components/InterviewDetailsContainer";
+import CandidateList from "../_components/CandidateList";
 
 function InterviewDetail() {
-    const {interview_id}=useParams();
-    const { user } =useUser();
-    const [interviewDetails,setInterviewDetails]=useState();
+  const { interview_id } = useParams();
+  const { user } = useUser();
+  const [interviewDetail, setInterviewDetail] = useState(null);
 
-    useEffect (()=>{
-        user &&GetInterviewDetails();
-    },[user])
-
-    const GetInterviewDetails=async()=>{
-         const result=await supabase.from('Interview')
-                .select(`jobPosition,jobDescription,type,questionList,duration,interview_id,created_at,
-                    interview-feedback(userEmail,userName,feedback,created_at)`)
-                .eq('userEmail',user?.email)
-                .eq('interview_id,interview_id')
-
-                setInterviewDetails(result?.data[0])
-            console.log(result);
+  useEffect(() => {
+    if (user) {
+      getInterviewDetails();
     }
+  }, [user]);
+
+  const getInterviewDetails = async () => {
+    const { data, error } = await supabase
+      .from("Interview")
+      .select(
+        `jobPosition,
+         jobDescription,
+         type,
+         questionList,
+         duration,
+         interview_id,
+         created_at,
+         interview-feedback(userEmail,userName,feedback,created_at)`
+      )
+      .eq("userEmail", user?.email)
+      .eq("interview_id", interview_id) // ✅ fixed this line
+
+    if (error) {
+      console.error("Error fetching interview details:", error.message);
+      return;
+    }
+
+    if (data && data.length > 0) {
+      setInterviewDetail(data[0]);
+    }
+  };
+
   return (
-    <div className='mt-5'>
-        <h2 className='font-bold text-2xl'>Interview Detail</h2>
-        <InterviewDetailContainer interviewDetail={interviewDetail} />
-        <CandidatList candidateList={interviewDetail?.['interview-feedback']} />
+    <div className="mt-5">
+      <h2 className="font-bold text-2xl">Interview Detail</h2>
+
+      {/* ✅ Pass state properly */}
+      {interviewDetail && (
+        <>
+          <InterviewDetailsContainer interviewDetail={interviewDetail} />
+          <CandidateList
+            candidateList={interviewDetail?.["interview-feedback"]}
+          />
+        </>
+      )}
     </div>
-  )
+  );
 }
 
-export default InterviewDetail
+export default InterviewDetail;
