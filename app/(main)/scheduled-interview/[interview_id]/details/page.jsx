@@ -2,7 +2,7 @@
 import{ supabase } from '@/service/supabaseClient';
 import { useParams } from 'next/navigation'
 import React from 'react'
-import React,{ useEffect } from 'react'
+import { useEffect } from 'react'
 import InterviewDeatilsContainer from'./_components/InterviewDetailContainer';
 
 function InterviewDetail() {
@@ -32,5 +32,6 @@ function InterviewDetail() {
     </div>
   )
 }
+
 
 export default InterviewDetail
