@@ -1,9 +1,9 @@
 "use client"
-import{ supabase } from '@/service/supabaseClient';
+import{ supabase } from '@/public/services/supabaseClient';
 import { useParams } from 'next/navigation'
 import React from 'react'
 import { useEffect } from 'react'
-import InterviewDeatilsContainer from'./_components/InterviewDetailContainer';
+import interviewDetails from '../_components/InterviewDetailsContainer';
 
 function InterviewDetail() {
     const {interview_id}=useParams();
@@ -21,7 +21,7 @@ function InterviewDetail() {
                 .eq('userEmail',user?.email)
                 .eq('interview_id,interview_id')
 
-                setInterviewDetails(reesult?.data[0])
+                setInterviewDetails(result?.data[0])
             console.log(result);
     }
   return (
@@ -32,6 +32,5 @@ function InterviewDetail() {
     </div>
   )
 }
-
 
 export default InterviewDetail
