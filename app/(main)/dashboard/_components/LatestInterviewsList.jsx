@@ -1,3 +1,5 @@
+"use client"
+
 import { Button } from '@/components/ui/button'
 import { Send } from 'lucide-react'
 import { FEEDBACK_PROMPT } from '@/public/services/Constants'
