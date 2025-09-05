@@ -1,8 +1,7 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
     "paths": {
-      "@/public/services/*": ["lib/*"]
+      "@/*": ["./*"]
     }
   }
 }
